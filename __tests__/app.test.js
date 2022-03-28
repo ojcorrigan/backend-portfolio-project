@@ -73,7 +73,7 @@ describe('getArticleById', () => {
         });
       });
   });
-  test("400: GET /api/articles/9999999 responds with bad request article doesn't exisit", () => {
+  xtest("400: GET /api/articles/9999999 responds with bad request article doesn't exisit", () => {
     return request(app)
       .get('/api/articles/9999999')
       .expect(400)
