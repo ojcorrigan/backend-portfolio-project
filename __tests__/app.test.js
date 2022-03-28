@@ -57,4 +57,20 @@ describe('getArticleById', () => {
         expect(result.body).toBeInstanceOf(Object);
       });
   });
+  test('200 GET /api/articles/2 responds with obeject with correct key values', () => {
+    return request(app)
+      .get('/api/articles/2')
+      .expect(200)
+      .then((result) => {
+        expect(result.body).toMatchObject({
+          author: expect.any(String),
+          title: expect.any(String),
+          article_id: expect.any(Number),
+          body: expect.any(String),
+          topic: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number),
+        });
+      });
+  });
 });
