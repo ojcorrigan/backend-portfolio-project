@@ -8,7 +8,7 @@ afterAll(() => db.end());
 beforeEach(() => seed(testData));
 
 describe('getTopics', () => {
-  test('200: responds with an array', () => {
+  test('200: /api/topics responds with an array', () => {
     return request(app)
       .get('/api/topics')
       .expect(200)
@@ -16,12 +16,11 @@ describe('getTopics', () => {
         expect(res.body).toBeInstanceOf(Array);
       });
   });
-  test('200 responds with an array of topics', () => {
+  test('200 /api/topics responds with an array of topics', () => {
     return request(app)
       .get('/api/topics')
       .expect(200)
       .then((res) => {
-        console.log(res.body);
         expect(res.body).toBeInstanceOf(Array);
         expect(res.body).toEqual([
           {
@@ -40,6 +39,11 @@ describe('getTopics', () => {
       });
   });
   test('/api/topic responds 404 not found', () => {
-    return request(app).get('/api/topic').expect(404);
+    return request(app)
+      .get('/api/topic')
+      .expect(404)
+      .then((result) => {
+        expect(result.body.msg).toBe('invalid path');
+      });
   });
 });
