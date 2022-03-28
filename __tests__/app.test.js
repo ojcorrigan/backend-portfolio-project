@@ -86,7 +86,6 @@ describe('getArticleById', () => {
       .get('/api/articles/ABD')
       .expect(400)
       .then((result) => {
-        console.log(result.body);
         expect(result.body.msg).toBe('Bad request invalid article_id');
       });
   });
