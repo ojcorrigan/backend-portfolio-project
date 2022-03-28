@@ -5,3 +5,5 @@ exports.selectTopics = () => {
     return res.rows;
   });
 };
+
+exports.selectArticleById = () => {};
