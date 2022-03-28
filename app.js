@@ -4,6 +4,6 @@ const { getTopics } = require('./controllers/controllers');
 
 app.use(express.json());
 
-app.get('api/topics', getTopics);
+app.get('/api/topics', getTopics);
 
 module.exports = app;

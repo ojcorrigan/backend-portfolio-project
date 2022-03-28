@@ -8,5 +8,38 @@ afterAll(() => db.end());
 beforeEach(() => seed(testData));
 
 describe('getTopics', () => {
-  test('gets an array', () => {});
+  test('200: responds with an array', () => {
+    return request(app)
+      .get('/api/topics')
+      .expect(200)
+      .then((res) => {
+        expect(res.body).toBeInstanceOf(Array);
+      });
+  });
+  test('200 responds with an array of topics', () => {
+    return request(app)
+      .get('/api/topics')
+      .expect(200)
+      .then((res) => {
+        console.log(res.body);
+        expect(res.body).toBeInstanceOf(Array);
+        expect(res.body).toEqual([
+          {
+            description: 'The man, the Mitch, the legend',
+            slug: 'mitch',
+          },
+          {
+            description: 'Not dogs',
+            slug: 'cats',
+          },
+          {
+            description: 'what books are made of',
+            slug: 'paper',
+          },
+        ]);
+      });
+  });
+  test('/api/topic responds 404 not found', () => {
+    return request(app).get('/api/topic').expect(404);
+  });
 });
