@@ -47,3 +47,14 @@ describe('getTopics', () => {
       });
   });
 });
+
+describe('getArticleById', () => {
+  xtest('200: GET /api/articles/2 responds with an article object', () => {
+    return request(app)
+      .get('/api/articles/2')
+      .expect(200)
+      .then((result) => {
+        expect(result.body).toBeInstanceOf(Object);
+      });
+  });
+});
