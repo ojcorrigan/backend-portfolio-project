@@ -1,3 +1,5 @@
 const { getTopicsMod } = require('../models/models');
 
-exports.getTopics = (req, res, next) => {};
+exports.getTopics = (req, res, next) => {
+  getTopicsMod();
+};
