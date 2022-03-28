@@ -73,13 +73,21 @@ describe('getArticleById', () => {
         });
       });
   });
-  test("400: GET /api/articles/9999999 responds with bad request article doesn't exisit", () => {
+  test("400: GET /api/articles/9999999 responds with bad request article doesn't exist", () => {
     return request(app)
       .get('/api/articles/9999999')
       .expect(400)
       .then((result) => {
-        console.log(result.body);
         expect(result.body.msg).toBe("Bad request, article doesn't exist");
+      });
+  });
+  test('400: GET /api/articles/ABD responds with bad request invalid article_id', () => {
+    return request(app)
+      .get('/api/articles/ABD')
+      .expect(400)
+      .then((result) => {
+        console.log(result.body);
+        expect(result.body.msg).toBe('Bad request invalid article_id');
       });
   });
 });
