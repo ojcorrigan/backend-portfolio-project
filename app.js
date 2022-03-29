@@ -1,15 +1,22 @@
 const express = require('express');
 const app = express();
+
 const {
   getTopics,
   getArticleById,
 } = require('./controllers/article-controllers');
+const { getUsers } = require('./controllers/users-controllers');
+
 const { invalidPath } = require('./controllers/misc-controllers');
 app.use(express.json());
 
 app.get('/api/topics', getTopics);
 
+
 app.get('/api/articles/:article_id', getArticleById);
+
+app.get('/api/users', getUsers);
+
 
 app.all('*', invalidPath);
 

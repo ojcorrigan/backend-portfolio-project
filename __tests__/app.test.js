@@ -48,6 +48,7 @@ describe('getTopics', () => {
   });
 });
 
+
 describe('getArticleById', () => {
   test('200 GET /api/articles/2 responds with obeject with correct key values', () => {
     return request(app)
@@ -80,6 +81,39 @@ describe('getArticleById', () => {
       .expect(400)
       .then((result) => {
         expect(result.body.msg).toBe('Bad request, invalid article_id');
+      })
+    })
+  })
+describe('getUsers', () => {
+  test('200: /api/users responds with an array', () => {
+    return request(app)
+      .get('/api/users')
+      .expect(200)
+      .then((res) => {
+        expect(res.body).toBeInstanceOf(Array);
+      });
+  });
+  test('200 /api/topics responds with an array of users, formatted correctly', () => {
+    return request(app)
+      .get('/api/users')
+      .expect(200)
+      .then((res) => {
+        expect(res.body).toBeInstanceOf(Array);
+        expect(
+          res.body.forEach((user) => {
+            expect(user).toMatchObject({
+              username: expect.any(String),
+            });
+          })
+        );
+      });
+  });
+  test('/api/userr responds 404 not found', () => {
+    return request(app)
+      .get('/api/userr')
+      .expect(404)
+      .then((result) => {
+        expect(result.body.msg).toBe('invalid path');
       });
   });
 });
