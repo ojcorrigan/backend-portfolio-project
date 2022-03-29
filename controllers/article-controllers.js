@@ -13,6 +13,10 @@ exports.getArticleById = (req, res, next) => {
 
 
 exports.patchArticleById = (req, res, next) => {
-  const{ article_id} = req.params
-  const{ body }= req.body
+  const{ article_id } = req.params
+  const votes = req.body.inc_votes
+
+  updateArticleById(article_id, votes).then((result) => {
+    res.status(202).send(result)
+  }) 
 }

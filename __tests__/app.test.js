@@ -119,14 +119,22 @@ describe('getUsers', () => {
 });
 
 
-xdescribe('patchArticleById', () => {
+describe.only('patchArticleById', () => {
   test('202 Patch /api/articles/:article_id successfully updates vote count', () => {
     return request(app)
-    .patch('/api/article/2')
-    .body({inc_votes: 5})
+    .patch('/api/articles/2')
+    .send({inc_votes: 5})
     .expect(202)
     .then((result) => {
-      expect(result.body).toBe({})
+      expect(result.body).toMatchObject({
+        author: 'icellusedkars',
+        title: expect.any(String),
+        article_id: 2,
+        body: expect.any(String),
+        topic: 'mitch',
+        created_at: expect.any(String),
+        votes: 5,
+      });
     })
   })
 })
