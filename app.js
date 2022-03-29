@@ -7,7 +7,7 @@ app.use(express.json());
 
 app.get('/api/topics', getTopics);
 
-app.get;
+app.get('/api/users', getUsers);
 
 app.all('*', invalidPath);
 
