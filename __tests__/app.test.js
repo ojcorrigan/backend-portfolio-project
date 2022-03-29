@@ -8,12 +8,12 @@ afterAll(() => db.end());
 beforeEach(() => seed(testData));
 
 describe('getTopics', () => {
-  test('200: /api/topics responds with an array', () => {
+  test('200: /api/topics responds with an object with key topics and an array', () => {
     return request(app)
       .get('/api/topics')
       .expect(200)
       .then((res) => {
-        expect(res.body).toBeInstanceOf(Array);
+        expect(res.body).toBeInstanceOf(Object);
       });
   });
   test('200 /api/topics responds with an array of topics', () => {
@@ -21,8 +21,8 @@ describe('getTopics', () => {
       .get('/api/topics')
       .expect(200)
       .then((res) => {
-        expect(res.body).toBeInstanceOf(Array);
-        expect(res.body).toEqual([
+        expect(res.body.topics).toBeInstanceOf(Array);
+        expect(res.body.topics).toEqual([
           {
             description: 'The man, the Mitch, the legend',
             slug: 'mitch',
