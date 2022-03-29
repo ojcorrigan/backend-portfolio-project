@@ -49,13 +49,14 @@ describe('getTopics', () => {
 });
 
 describe('getArticleById', () => {
-  xtest('200 GET /api/articles responds with an array of article objects', () => {
+  test('200 GET /api/articles responds with an array of article objects', () => {
     return request(app)
     .get('/api/articles')
+    .expect(200)
     .then((result) => {
-      expect(result.body).toBeInstanceof(Array)
+      expect(result.body).toBeInstanceOf(Array)
       expect(result.body.forEach((article) => {
-        article.toMatchObject({
+        expect(article).toMatchObject({
           author: expect.any(String),
           title: expect.any(String),
           article_id: expect.any(Number),
