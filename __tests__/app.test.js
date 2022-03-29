@@ -48,6 +48,26 @@ describe('getTopics', () => {
   });
 });
 
+describe('getArticleById', () => {
+  xtest('200 GET /api/articles responds with an array of article objects', () => {
+    return request(app)
+    .get('/api/articles')
+    .then((result) => {
+      expect(result.body).toBeInstanceof(Array)
+      expect(result.body.forEach((article) => {
+        article.toMatchObject({
+          author: expect.any(String),
+          title: expect.any(String),
+          article_id: expect.any(Number),
+          body: expect.any(String),
+          topic: expect.any(String),
+          created_at: expect.any(String),
+          votes: expect.any(Number)
+        })
+      }))
+    })
+  })
+})
 
 describe('getArticleById', () => {
   test('200 GET /api/articles/2 responds with obeject with correct key values', () => {
