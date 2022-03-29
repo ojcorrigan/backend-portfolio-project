@@ -68,7 +68,16 @@ describe('getArticleById', () => {
       }))
     })
   })
-})
+  test('200 GET /api/articles sorts articles by date', () => {
+    return request(app)
+    .get('/api/articles')
+    .expect(200)
+    .then((result) => {
+      expect(result.body).toBeSortedBy('created_at', {descending: true})
+    })
+    
+    })
+  })
 
 describe('getArticleById', () => {
   test('200 GET /api/articles/2 responds with obeject with correct key values', () => {
