@@ -15,14 +15,22 @@ exports.selectArticleById = (article_id) => {
 
 
 exports.updateArticleById = (article_id, votes) => {
-
+  if (typeof votes !== 'number') {return Promise.reject({
+    status: 400,
+    msg: 'Bad request',
+  });}
   return db.query(
     `UPDATE articles
     SET
     votes = votes + $1
     WHERE article_id = $2
     RETURNING *;`, [votes, article_id]).then((results) => {
-      return results.rows[0]
+      if(!results.rows.length) {
+        return Promise.reject({
+          status: 404,
+          msg: 'Article not found',
+        })
+      }else return results.rows[0]
     })
 
 }
