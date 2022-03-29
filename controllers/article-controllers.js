@@ -14,6 +14,6 @@ exports.getArticleById = (req, res, next) => {
 exports.getArticles = (req,res,next) => {
   
   selectArticles().then((result) => {
-    res.status(200).send(result)
+    res.status(200).send({articles: result})
   })
 }
