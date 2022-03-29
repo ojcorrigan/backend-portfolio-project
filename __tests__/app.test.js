@@ -47,3 +47,14 @@ describe('getTopics', () => {
       });
   });
 });
+
+describe('getUsers', () => {
+  xtest('200: /api/users responds with an array', () => {
+    return request(app)
+      .get('/api/users')
+      .expect(200)
+      .then((res) => {
+        expect(res.body).toBeInstanceOf(Array);
+      });
+  });
+});
