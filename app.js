@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
-const { getTopics, getArticleById } = require('./controllers/controllers');
+const {
+  getTopics,
+  getArticleById,
+} = require('./controllers/article-controllers');
 const { invalidPath } = require('./controllers/misc-controllers');
 app.use(express.json());
 

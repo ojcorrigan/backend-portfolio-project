@@ -12,8 +12,8 @@ exports.selectArticleById = (article_id) => {
     .then((result) => {
       if (!result.rows.length) {
         return Promise.reject({
-          status: 400,
-          msg: "Bad request, article doesn't exist",
+          status: 404,
+          msg: 'Article not found',
         });
       } else return result.rows[0];
     });

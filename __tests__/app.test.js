@@ -76,9 +76,9 @@ describe('getArticleById', () => {
   test("400: GET /api/articles/9999999 responds with bad request article doesn't exist", () => {
     return request(app)
       .get('/api/articles/9999999')
-      .expect(400)
+      .expect(404)
       .then((result) => {
-        expect(result.body.msg).toBe("Bad request, article doesn't exist");
+        expect(result.body.msg).toBe('Article not found');
       });
   });
   test('400: GET /api/articles/ABD responds with bad request invalid article_id', () => {
