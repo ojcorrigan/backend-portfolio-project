@@ -1,4 +1,4 @@
-const { selectArticleById } = require('../models/article-models');
+const { selectArticleById,updateArticleById } = require('../models/article-models');
 
 exports.getArticleById = (req, res, next) => {
   const { article_id } = req.params;
@@ -10,3 +10,9 @@ exports.getArticleById = (req, res, next) => {
       next(err);
     });
 };
+
+
+exports.patchArticleById = (req, res, next) => {
+  const{ article_id} = req.params
+  const{ body }= req.body
+}

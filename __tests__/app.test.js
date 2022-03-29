@@ -117,3 +117,16 @@ describe('getUsers', () => {
       });
   });
 });
+
+
+xdescribe('patchArticleById', () => {
+  test('202 Patch /api/articles/:article_id successfully updates vote count', () => {
+    return request(app)
+    .patch('/api/article/2')
+    .body({inc_votes: 5})
+    .expect(202)
+    .then((result) => {
+      expect(result.body).toBe({})
+    })
+  })
+})

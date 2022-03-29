@@ -12,3 +12,6 @@ exports.selectArticleById = (article_id) => {
       } else return result.rows[0];
     });
 };
+
+
+exports.updateArticleById = () => {}
