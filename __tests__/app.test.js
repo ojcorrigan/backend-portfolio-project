@@ -170,4 +170,9 @@ describe('getUsers', () => {
           }))
         })
       })
+      test('404: GET /api/articles/:article_id/comments article id not found', () => {
+        return request(app)
+        .get('/api/articles/1000/comments')
+        .expect(404)
+      })
     })

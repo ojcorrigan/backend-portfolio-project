@@ -20,7 +20,12 @@ exports.getArticles = (req,res,next) => {
 
 exports.getArticleComments = (req, res, next) => {
  const { article_id } = req.params
-  selectArticleComments(article_id).then((comments) => {
-    res.status(200).send({ comments })
-  })
+ const promise1 = selectArticleById(article_id)
+ const promise2 = selectArticleComments(article_id)
+
+ const dbPromises = [promise1, promise2]
+
+ Promise.all(dbPromises).then((result) => {
+   res.status(200).send({comments: result[1]})
+ }).catch(next)
 }
