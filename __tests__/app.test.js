@@ -48,6 +48,42 @@ describe('getTopics', () => {
   });
 });
 
+
+describe('getArticleById', () => {
+  test('200 GET /api/articles/2 responds with obeject with correct key values', () => {
+    return request(app)
+      .get('/api/articles/2')
+      .expect(200)
+      .then((result) => {
+        expect(result.body).toBeInstanceOf(Object);
+        expect(result.body).toMatchObject({
+          author: 'icellusedkars',
+          title: expect.any(String),
+          article_id: 2,
+          body: expect.any(String),
+          topic: 'mitch',
+          created_at: expect.any(String),
+          votes: 0,
+        });
+      });
+  });
+  test('404: GET /api/articles/9999999 responds with Article not found', () => {
+    return request(app)
+      .get('/api/articles/9999999')
+      .expect(404)
+      .then((result) => {
+        expect(result.body.msg).toBe('Article not found');
+      });
+  });
+  test('400: GET /api/articles/ABD responds with bad request invalid article_id', () => {
+    return request(app)
+      .get('/api/articles/ABD')
+      .expect(400)
+      .then((result) => {
+        expect(result.body.msg).toBe('Bad request, invalid article_id');
+      })
+    })
+  })
 describe('getUsers', () => {
   test('200: /api/users responds with an array', () => {
     return request(app)
