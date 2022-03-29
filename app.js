@@ -1,10 +1,8 @@
 const express = require('express');
 const app = express();
 
-const {
-  getTopics,
-  getArticleById,
-} = require('./controllers/article-controllers');
+const{ getTopics } = require('./controllers/topics-controllers')
+const { getArticleById } = require('./controllers/article-controllers');
 const { getUsers } = require('./controllers/users-controllers');
 
 const { invalidPath } = require('./controllers/misc-controllers');
