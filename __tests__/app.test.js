@@ -49,12 +49,27 @@ describe('getTopics', () => {
 });
 
 describe('getUsers', () => {
-  xtest('200: /api/users responds with an array', () => {
+  test('200: /api/users responds with an array', () => {
     return request(app)
       .get('/api/users')
       .expect(200)
       .then((res) => {
         expect(res.body).toBeInstanceOf(Array);
+      });
+  });
+  test('200 /api/topics responds with an array of users, formatted correctly', () => {
+    return request(app)
+      .get('/api/users')
+      .expect(200)
+      .then((res) => {
+        expect(res.body).toBeInstanceOf(Array);
+        expect(
+          res.body.forEach((user) => {
+            expect(user).toMatchObject({
+              username: expect.any(String),
+            });
+          })
+        );
       });
   });
 });
