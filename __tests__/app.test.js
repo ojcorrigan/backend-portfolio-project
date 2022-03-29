@@ -72,4 +72,12 @@ describe('getUsers', () => {
         );
       });
   });
+  test('/api/userr responds 404 not found', () => {
+    return request(app)
+      .get('/api/userr')
+      .expect(404)
+      .then((result) => {
+        expect(result.body.msg).toBe('invalid path');
+      });
+  });
 });
