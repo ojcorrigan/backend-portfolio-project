@@ -85,6 +85,7 @@ describe('getArticleById', () => {
   })
 })
 describe('getUsers', () => {
+
   test('200: /api/users responds with an array', () => {
     return request(app)
     .get('/api/users')
@@ -146,5 +147,27 @@ describe('getUsers', () => {
       .then((result) => {
         expect(result.body.articles).toBeSortedBy('created_at', {descending: true})
       })
+      })
+       })
+
+    describe('getArticleComments', () => {
+      test('200: GET /api/articles/:article_id/comments responds with comments object', () => {
+        return request(app)
+        .get('/api/articles/1/comments')
+        .expect(200)
+        .then((result) => {
+          expect(result.body).toBeInstanceOf(Object)
+          expect(result.body.comments).toBeInstanceOf(Array)
+          expect(result.body.comments.forEach((comment) => {
+            expect(comment).toMatchObject({
+              comment_id: expect.any(Number),
+              votes: expect.any(Number), 
+              created_at: expect.any(String),
+              author: expect.any(String),
+              body: expect.any(String)
+
+            })
+          }))
+        })
       })
     })
