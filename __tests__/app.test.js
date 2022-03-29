@@ -48,102 +48,110 @@ describe('getTopics', () => {
   });
 });
 
-describe('getArticleById', () => {
-  test('200 GET /api/articles responds with an array of article objects', () => {
-    return request(app)
-    .get('/api/articles')
-    .expect(200)
-    .then((result) => {
-      expect(result.body).toBeInstanceOf(Array)
-      expect(result.body.forEach((article) => {
-        expect(article).toMatchObject({
-          author: expect.any(String),
-          title: expect.any(String),
-          article_id: expect.any(Number),
-          body: expect.any(String),
-          topic: expect.any(String),
-          created_at: expect.any(String),
-          votes: expect.any(Number)
-        })
-      }))
-    })
-  })
-  test('200 GET /api/articles sorts articles by date', () => {
-    return request(app)
-    .get('/api/articles')
-    .expect(200)
-    .then((result) => {
-      expect(result.body).toBeSortedBy('created_at', {descending: true})
-    })
-    
-    })
-  })
 
 describe('getArticleById', () => {
   test('200 GET /api/articles/2 responds with obeject with correct key values', () => {
     return request(app)
-      .get('/api/articles/2')
-      .expect(200)
-      .then((result) => {
-        expect(result.body).toBeInstanceOf(Object);
-        expect(result.body).toMatchObject({
-          author: 'icellusedkars',
-          title: expect.any(String),
-          article_id: 2,
-          body: expect.any(String),
-          topic: 'mitch',
-          created_at: expect.any(String),
-          votes: 0,
-        });
+    .get('/api/articles/2')
+    .expect(200)
+    .then((result) => {
+      expect(result.body).toBeInstanceOf(Object);
+      expect(result.body).toMatchObject({
+        author: 'icellusedkars',
+        title: expect.any(String),
+        body: expect.any(String),
+        article_id: 2,
+        topic: 'mitch',
+        created_at: expect.any(String),
+        votes: 0
       });
+    });
   });
   test('404: GET /api/articles/9999999 responds with Article not found', () => {
     return request(app)
-      .get('/api/articles/9999999')
-      .expect(404)
-      .then((result) => {
-        expect(result.body.msg).toBe('Article not found');
-      });
+    .get('/api/articles/9999999')
+    .expect(404)
+    .then((result) => {
+      expect(result.body.msg).toBe('Article not found');
+    });
   });
   test('400: GET /api/articles/ABD responds with bad request invalid article_id', () => {
     return request(app)
-      .get('/api/articles/ABD')
-      .expect(400)
-      .then((result) => {
-        expect(result.body.msg).toBe('Bad request, invalid article_id');
-      })
+    .get('/api/articles/ABD')
+    .expect(400)
+    .then((result) => {
+      expect(result.body.msg).toBe('Bad request, invalid article_id');
     })
   })
+})
 describe('getUsers', () => {
   test('200: /api/users responds with an array', () => {
     return request(app)
-      .get('/api/users')
-      .expect(200)
-      .then((res) => {
-        expect(res.body).toBeInstanceOf(Array);
-      });
+    .get('/api/users')
+    .expect(200)
+    .then((res) => {
+      expect(res.body).toBeInstanceOf(Array);
+    });
   });
   test('200 /api/topics responds with an array of users, formatted correctly', () => {
     return request(app)
-      .get('/api/users')
-      .expect(200)
-      .then((res) => {
-        expect(res.body).toBeInstanceOf(Array);
-        expect(
-          res.body.forEach((user) => {
-            expect(user).toMatchObject({
-              username: expect.any(String),
-            });
-          })
+    .get('/api/users')
+    .expect(200)
+    .then((res) => {
+      expect(res.body).toBeInstanceOf(Array);
+      expect(
+        res.body.forEach((user) => {
+          expect(user).toMatchObject({
+            username: expect.any(String),
+          });
+        })
         );
       });
-  });
-  test('/api/userr responds 404 not found', () => {
-    return request(app)
+    });
+    test('/api/userr responds 404 not found', () => {
+      return request(app)
       .get('/api/userr')
       .expect(404)
       .then((result) => {
         expect(result.body.msg).toBe('invalid path');
       });
+    });
   });
-});
+  
+  describe('getArticles', () => {
+    test('200 GET /api/articles responds with an array of article objects', () => {
+      return request(app)
+      .get('/api/articles')
+      .expect(200)
+      .then((result) => {
+        expect(result.body).toBeInstanceOf(Array)
+        expect(result.body.forEach((article) => {
+          expect(article).toMatchObject({
+            author: expect.any(String),
+            title: expect.any(String),
+            article_id: expect.any(Number),
+            topic: expect.any(String),
+            created_at: expect.any(String),
+            votes: expect.any(Number)
+          })
+        }))
+        expect(Number(result.body[5].comment_count)).toBe(11)
+      })
+    })
+    test('200 GET /api/articles sorts articles by date', () => {
+      return request(app)
+      .get('/api/articles')
+      .expect(200)
+      .then((result) => {
+        expect(result.body).toBeSortedBy('created_at', {descending: true})
+      })
+      })
+      test('/api/article responds 404 not found', () => {
+        return request(app)
+          .get('/api/article')
+          .expect(404)
+          .then((result) => {
+            expect(result.body.msg).toBe('invalid path');
+          });
+      });
+    })
