@@ -49,31 +49,24 @@ describe('getTopics', () => {
 });
 
 describe('getArticleById', () => {
-  test('200: GET /api/articles/2 responds with an article object', () => {
-    return request(app)
-      .get('/api/articles/2')
-      .expect(200)
-      .then((result) => {
-        expect(result.body).toBeInstanceOf(Object);
-      });
-  });
   test('200 GET /api/articles/2 responds with obeject with correct key values', () => {
     return request(app)
       .get('/api/articles/2')
       .expect(200)
       .then((result) => {
+        expect(result.body).toBeInstanceOf(Object);
         expect(result.body).toMatchObject({
-          author: expect.any(String),
+          author: 'icellusedkars',
           title: expect.any(String),
-          article_id: expect.any(Number),
+          article_id: 2,
           body: expect.any(String),
-          topic: expect.any(String),
+          topic: 'mitch',
           created_at: expect.any(String),
-          votes: expect.any(Number),
+          votes: 0,
         });
       });
   });
-  test("400: GET /api/articles/9999999 responds with bad request article doesn't exist", () => {
+  test('404: GET /api/articles/9999999 responds with Article not found', () => {
     return request(app)
       .get('/api/articles/9999999')
       .expect(404)
