@@ -20,6 +20,28 @@ exports.selectArticles = () => {
     FROM articles 
     LEFT JOIN comments ON comments.article_id = articles.article_id GROUP BY articles.article_id 
     ORDER BY created_at DESC;`).then((result) => {
-    return result.rows
-  })
+      return result.rows
+    })
+  };
+
+
+exports.updateArticleById = (article_id, votes) => {
+  if (typeof votes !== 'number') {return Promise.reject({
+    status: 400,
+    msg: 'Bad request',
+  });}
+  return db.query(
+    `UPDATE articles
+    SET
+    votes = votes + $1
+    WHERE article_id = $2
+    RETURNING *;`, [votes, article_id]).then((results) => {
+      if(!results.rows.length) {
+        return Promise.reject({
+          status: 404,
+          msg: 'Article not found',
+        })
+      }else return results.rows[0]
+    })
+
 }

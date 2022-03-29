@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 
 const{ getTopics } = require('./controllers/topics-controllers')
-const { getArticles, getArticleById } = require('./controllers/article-controllers');
+
+const { getArticles, getArticleById, patchArticleById } = require('./controllers/article-controllers');
+
 const { getUsers } = require('./controllers/users-controllers');
 
 const { invalidPath } = require('./controllers/misc-controllers');
@@ -16,6 +18,8 @@ app.get('/api/articles/:article_id', getArticleById);
 
 app.get('/api/users', getUsers);
 
+
+app.patch('/api/articles/:article_id', patchArticleById)
 
 app.all('*', invalidPath);
 

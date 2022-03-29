@@ -117,6 +117,7 @@ describe('getUsers', () => {
       });
     });
   });
+
   
   describe('getArticles', () => {
     test('200 GET /api/articles responds with an Object with a key of articles with a value of an array of article objects', () => {
@@ -148,3 +149,77 @@ describe('getUsers', () => {
       })
       })
     })
+
+
+
+describe('patchArticleById', () => {
+  test('202 Patch /api/articles/:article_id successfully updates vote count', () => {
+    return request(app)
+    .patch('/api/articles/2')
+    .send({inc_votes: 5})
+    .expect(202)
+    .then((result) => {
+      expect(result.body).toMatchObject({
+        author: 'icellusedkars',
+        title: expect.any(String),
+        article_id: 2,
+        body: expect.any(String),
+        topic: 'mitch',
+        created_at: expect.any(String),
+        votes: 5,
+      });
+    })
+  })
+  test('202 Patch /api/articles/:article_id successfully updates vote count down', () => {
+    return request(app)
+    .patch('/api/articles/1')
+    .send({inc_votes: -5})
+    .expect(202)
+    .then((result) => {
+      expect(result.body).toMatchObject({
+        author: 'butter_bridge',
+        title: expect.any(String),
+        article_id: 1,
+        body: expect.any(String),
+        topic: 'mitch',
+        created_at: expect.any(String),
+        votes: 95,
+      });
+    })
+  })
+  test('202 Patch /api/articles/:article_id successfully updates vote count down below 0', () => {
+    return request(app)
+    .patch('/api/articles/1')
+    .send({inc_votes: -105})
+    .expect(202)
+    .then((result) => {
+      expect(result.body).toMatchObject({
+        author: 'butter_bridge',
+        title: expect.any(String),
+        article_id: 1,
+        body: expect.any(String),
+        topic: 'mitch',
+        created_at: expect.any(String),
+        votes: -5,
+      });
+    })
+  })
+  test('400 Patch /api/articles/:article_id invalid input for send', () => {
+    return request(app)
+    .patch('/api/articles/1')
+    .send({inc_votes: 'abc'})
+    .expect(400)
+  })
+  test('400 Patch /api/articles/:article_id invalid input for send', () => {
+    return request(app)
+    .patch('/api/articles/1')
+    .send('7')
+    .expect(400)
+  })
+  test('404 Patch /api/articles/:article_id author not found', () => {
+    return request(app)
+    .patch('/api/articles/1000000')
+    .send({inc_votes: -105})
+    .expect(404)
+  })
+})
