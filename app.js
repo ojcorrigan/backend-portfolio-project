@@ -3,7 +3,7 @@ const app = express();
 
 const{ getTopics } = require('./controllers/topics-controllers')
 
-const { getArticles, getArticleById, patchArticleById } = require('./controllers/article-controllers');
+const { getArticles, getArticleById, patchArticleById, postComment, getArticleComments } = require('./controllers/article-controllers');
 
 const { deleteComment } = require('./controllers/comments-controllers')
 
@@ -20,11 +20,14 @@ app.get('/api/articles/:article_id', getArticleById);
 
 app.get('/api/users', getUsers);
 
+app.get('/api/articles/:article_id/comments', getArticleComments)
 
 app.patch('/api/articles/:article_id', patchArticleById)
 
-
 app.delete('/api/comments/:comment_id', deleteComment)
+
+app.post('/api/articles/:article_id/comments', postComment)
+
 
 app.all('*', invalidPath);
 
@@ -36,9 +39,10 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  if (err.code === '22P02')
-    res.status(400).send({ msg: 'Bad request, invalid article_id' });
-  else {
+  errors = ['22P02', '23503', '23502' ]
+  if(errors.includes(err.code)){
+    res.status(400).send({ msg: 'Bad request'})
+  } else {
     next(err);
   }
 });

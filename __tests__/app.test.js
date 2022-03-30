@@ -75,16 +75,18 @@ describe('getArticleById', () => {
       expect(result.body.msg).toBe('Article not found');
     });
   });
-  test('400: GET /api/articles/ABD responds with bad request invalid article_id', () => {
+  test('400: GET /api/articles/ABD responds with bad request', () => {
     return request(app)
     .get('/api/articles/ABD')
     .expect(400)
     .then((result) => {
-      expect(result.body.msg).toBe('Bad request, invalid article_id');
+      expect(result.body.msg).toBe('Bad request');
     })
   })
 })
+
 describe('getUsers', () => {
+
   test('200: /api/users responds with an array', () => {
     return request(app)
     .get('/api/users')
@@ -108,7 +110,7 @@ describe('getUsers', () => {
         );
       });
     });
-    test('/api/userr responds 404 not found', () => {
+  test('/api/userr responds 404 not found', () => {
       return request(app)
       .get('/api/userr')
       .expect(404)
@@ -147,9 +149,40 @@ describe('getUsers', () => {
       .then((result) => {
         expect(result.body.articles).toBeSortedBy('created_at', {descending: true})
       })
+   })
+ })
+
+    describe('getArticleComments', () => {
+      test('200: GET /api/articles/:article_id/comments responds with comments object', () => {
+        return request(app)
+        .get('/api/articles/1/comments')
+        .expect(200)
+        .then((result) => {
+          expect(result.body).toBeInstanceOf(Object)
+          expect(result.body.comments).toBeInstanceOf(Array)
+          expect(result.body.comments.forEach((comment) => {
+            expect(comment).toMatchObject({
+              comment_id: expect.any(Number),
+              votes: expect.any(Number), 
+              created_at: expect.any(String),
+              author: expect.any(String),
+              body: expect.any(String)
+
+            })
+          }))
+        })
+      })
+      test('404: GET /api/articles/:article_id/comments article id not found', () => {
+        return request(app)
+        .get('/api/articles/1000/comments')
+        .expect(404)
+      })
+      test('404: GET /api/articles/:article_id/comments bad article id', () => {
+        return request(app)
+        .get('/api/articles/a/comments')
+        .expect(400)
       })
     })
-
 
 
 describe('patchArticleById', () => {
@@ -224,8 +257,7 @@ describe('patchArticleById', () => {
   })
 })
 
-
-describe.only('deleteComment', () => {
+describe('deleteComment', () => {
 test('204: DELETE /api/comments/2 removes comment by comment_id', () => {
   return request(app)
   .delete('/api/comments/2')
@@ -244,12 +276,64 @@ test('404: DELETE /api/comments/2000 comment_id not found', () => {
     expect(result.body.msg).toBe('Comment not found')
   })
 })
-test('404: DELETE /api/comments/A invalid comment id input', () => {
+test('400: DELETE /api/comments/A invalid comment id input', () => {
   return request(app)
   .delete('/api/comments/A')
   .expect(400)
   .then((result) => {
-    expect(result.body.msg).toBe('Bad request, invalid article_id')
+    expect(result.body.msg).toBe('Bad request')
   })
 })
 })
+
+describe('postComment', () => {
+  test('201: /api/articles/:article_id/comments returns the posted comment and inserts it into comments table', () => {
+    return request(app)
+    .post('/api/articles/2/comments')
+    .send({username: 'lurker',
+            body: "hi this is a test comment"})
+    .expect(201)
+    .then((result) => {
+      expect(result.body).toEqual({author: 'lurker',
+      body: "hi this is a test comment", 
+      article_id: 2,
+      comment_id: 19,
+      created_at: expect.any(String),
+      votes:0
+      }) 
+    })
+  })
+  test('400: /api/articles/:article_id/comments bad request username doesn\'t exist', () => {
+    return request(app)
+    .post('/api/articles/2/comments')
+    .send({username: 'i_dont_exist',
+    body: "hi this is a test comment"})
+    .expect(400)
+    .then((result) => {
+      expect(result.body.msg).toBe('Bad request')
+    })
+  })
+  test('404: /api/articles/:article_id/comments article not found', () => {
+    return request(app)
+    .post('/api/articles/1000/comments')
+    .send({username: 'lurker',
+    body: "hi this is a test comment"})
+    .expect(404)
+    .then((result) => {
+      expect(result.body.msg).toBe('Article not found')
+    })
+  })
+  test('400: /api/articles/:article_id/comments body missing', () => {
+    return request(app)
+    .post('/api/articles/1/comments')
+    .send({username: 'lurker'
+    })
+    .expect(400)
+    .then((result) => {
+      expect(result.body.msg).toBe('Bad request')
+    })
+  })
+})
+  
+
+
