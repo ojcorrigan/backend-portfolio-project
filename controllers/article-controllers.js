@@ -1,6 +1,5 @@
 
-const { selectArticles, selectArticleById,updateArticleById, insertComment } = require('../models/article-models');
-
+const { selectArticles, selectArticleById,updateArticleById, insertComment, selectArticleComments } = require('../models/article-models');
 
 exports.getArticleById = (req, res, next) => {
   const { article_id } = req.params;
@@ -18,7 +17,19 @@ exports.getArticles = (req,res,next) => {
   selectArticles().then((result) => {
     res.status(200).send({articles: result})
   })
-    .catch((err) => {
+}
+
+exports.getArticleComments = (req, res, next) => {
+ const { article_id } = req.params
+ const promise1 = selectArticleById(article_id)
+ const promise2 = selectArticleComments(article_id)
+
+ const dbPromises = [promise1, promise2]
+
+ Promise.all(dbPromises)
+.then((result) => {
+   res.status(200).send({comments: result[1]})
+ }).catch((err) => {
       next(err);
     });
 }

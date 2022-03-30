@@ -20,10 +20,18 @@ exports.selectArticles = () => {
     FROM articles 
     LEFT JOIN comments ON comments.article_id = articles.article_id GROUP BY articles.article_id 
     ORDER BY created_at DESC;`).then((result) => {
-      return result.rows
-    })
-  };
+    return result.rows
+  })
+}
 
+exports.selectArticleComments = (article_id) => {
+  
+    return db.query(`SELECT comment_id, votes, created_at, author, body FROM comments WHERE article_id = $1;`, [article_id])
+  .then((result) => {
+   return result.rows
+ })  
+
+  }
 
 exports.updateArticleById = (article_id, votes) => {
   if (typeof votes !== 'number') {return Promise.reject({
@@ -57,3 +65,4 @@ exports.insertComment = (username, body, article_id) => {
  
     })
 }
+
