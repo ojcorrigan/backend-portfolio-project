@@ -225,11 +225,31 @@ describe('patchArticleById', () => {
 })
 
 
-xdescribe('deleteComment', () => {
-test('204: DELETE /api/comments/:comment_id removes comment by comment_id', () => {
+describe.only('deleteComment', () => {
+test('204: DELETE /api/comments/2 removes comment by comment_id', () => {
   return request(app)
   .delete('/api/comments/2')
   .expect(204)
+  .then(()=> {
+    return request(app)
+    .get('/api/comments/2')
+    .expect(404)
+  })
 })
-
+test('404: DELETE /api/comments/2000 comment_id not found', () => {
+  return request(app)
+  .delete('/api/comments/20000')
+  .expect(404)
+  .then((result) => {
+    expect(result.body.msg).toBe('Comment not found')
+  })
+})
+test('404: DELETE /api/comments/A invalid comment id input', () => {
+  return request(app)
+  .delete('/api/comments/A')
+  .expect(400)
+  .then((result) => {
+    expect(result.body.msg).toBe('Bad request, invalid article_id')
+  })
+})
 })
