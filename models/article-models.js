@@ -13,21 +13,37 @@ exports.selectArticleById = (article_id) => {
   });
 };
 
-exports.selectArticles = (sortby = 'created_at', order = 'DESC') => {
-  const validSortBy = ['title', 'article_id', 'topic', 'created_at', 'votes', 'author']
+exports.selectArticles = (sortby = 'created_at', order = 'DESC', topic) => {
+  const validSortBy = 
+  ['title', 
+  'article_id', 
+  'topic', 
+  'created_at', 
+  'votes', 
+  'author']
+
   const validOrder = ['ASC', 'DESC']
+
+  const topicArr = []
 
   if(!validSortBy.includes(sortby) || !validOrder.includes(order)) {
     return Promise.reject({ status: 400, msg: 'Bad request' });
   }
+  
+ let queryString =  `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, 
+COUNT(comment_id) as comment_count
+FROM articles 
+LEFT JOIN comments ON comments.article_id = articles.article_id`
 
-  return db.query(
-    `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, 
-    COUNT(comment_id) as comment_count
-    FROM articles 
-    LEFT JOIN comments ON comments.article_id = articles.article_id GROUP BY articles.article_id 
-    ORDER BY ${sortby} ${order};`).then((result) => {
-    return result.rows
+if(topic) {
+  queryString += ` WHERE topic LIKE $1`
+  topicArr.push(topic)
+} 
+
+queryString += ` GROUP BY articles.article_id ORDER BY ${sortby} ${order};`
+
+  return db.query(queryString, topicArr).then((result) => {
+  return result.rows
   })
 }
 

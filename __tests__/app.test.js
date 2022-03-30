@@ -368,6 +368,18 @@ describe('getArticles query', () => {
       expect(result.body.articles).toBeSortedBy('author', {ascending: true})
     })
   })
+  test('200: /api/articles/ passed valid query with valid topic', () => {
+    return request(app)
+    .get('/api/articles?sortby=author&&order=ASC&&topic=mitch')
+    .expect(200)
+    .then((result) => {
+      expect(result.body.articles).toBeSortedBy('author', {ascending: true})
+      expect(result.body.articles.length).toBe(11)
+      expect(result.body.articles.forEach((article) => {
+        expect(article.topic).toBe('mitch')
+      }))
+    })
+  })
   test('400: /api/articles/if passed an invalid sortby returns 400 ', () => {
     return request(app)
     .get('/api/articles?sortby=authors')
@@ -379,6 +391,14 @@ describe('getArticles query', () => {
   test('400: /api/articles/if passed an invalid order returns bad request ', () => {
     return request(app)
     .get('/api/articles?sortby=author&&order=DROP DATABASE')
+    .expect(400)
+    .then((result) => {
+      expect(result.body.msg).toBe('Bad request')
+    })
+  })
+  test('400: /api/articles/if passed an invalid topic returns', () => {
+    return request(app)
+    .get('/api/articles?sortby=authors&&topic=mountains')
     .expect(400)
     .then((result) => {
       expect(result.body.msg).toBe('Bad request')
