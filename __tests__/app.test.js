@@ -223,3 +223,33 @@ describe('patchArticleById', () => {
     .expect(404)
   })
 })
+
+describe('postComment', () => {
+  test('202: /api/articles/:article_id/comments returns the posted comment and inserts it into comments table', () => {
+    return request(app)
+    .post('/api/articles/2/comments')
+    .send({username: 'lurker',
+            body: "hi this is a test comment"})
+    .expect(202)
+    .then((result) => {
+      expect(result.body).toEqual({author: 'lurker',
+      body: "hi this is a test comment", 
+      article_id: 2,
+      comment_id: 19,
+      created_at: expect.any(String),
+      votes:0
+  }) 
+  })
+  })
+  test('400: /api/articles/:article_id/comments bad request username doesn\'t exist', () => {
+    return request(app)
+    .post('/api/articles/2/comments')
+    .send({username: 'i_dont_exist',
+    body: "hi this is a test comment"})
+    .expect(400)
+    .then((result) => {
+      expect(result.body.msg).toBe('Bad request, user doesn\'t exist')
+    })
+  })
+  })
+  
