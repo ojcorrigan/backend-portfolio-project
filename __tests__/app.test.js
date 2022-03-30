@@ -248,7 +248,37 @@ describe('postComment', () => {
     body: "hi this is a test comment"})
     .expect(400)
     .then((result) => {
-      expect(result.body.msg).toBe('Bad request, user doesn\'t exist')
+      expect(result.body.msg).toBe('Bad request')
+    })
+  })
+  test('400: /api/articles/:article_id/comments article not found', () => {
+    return request(app)
+    .post('/api/articles/1000/comments')
+    .send({username: 'lurker',
+    body: "hi this is a test comment"})
+    .expect(400)
+    .then((result) => {
+      expect(result.body.msg).toBe('Bad request')
+    })
+  })
+  test('400: /api/articles/:article_id/comments article not found', () => {
+    return request(app)
+    .post('/api/articles/1000/comments')
+    .send({username: 'lurker',
+    body: "hi this is a test comment"})
+    .expect(400)
+    .then((result) => {
+      expect(result.body.msg).toBe('Bad request')
+    })
+  })
+  test('400: /api/articles/:article_id/comments body missing', () => {
+    return request(app)
+    .post('/api/articles/1000/comments')
+    .send({username: 'lurker'
+    })
+    .expect(400)
+    .then((result) => {
+      expect(result.body.msg).toBe('Bad request, missing information')
     })
   })
   })
