@@ -175,4 +175,9 @@ describe('getUsers', () => {
         .get('/api/articles/1000/comments')
         .expect(404)
       })
+      test('404: GET /api/articles/:article_id/comments bad article id', () => {
+        return request(app)
+        .get('/api/articles/a/comments')
+        .expect(400)
+      })
     })

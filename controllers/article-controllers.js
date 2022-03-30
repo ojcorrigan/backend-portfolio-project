@@ -25,7 +25,8 @@ exports.getArticleComments = (req, res, next) => {
 
  const dbPromises = [promise1, promise2]
 
- Promise.all(dbPromises).then((result) => {
+ Promise.all(dbPromises)
+.then((result) => {
    res.status(200).send({comments: result[1]})
  }).catch(next)
 }
