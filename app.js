@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 
 const{ getTopics } = require('./controllers/topics-controllers')
-const { getArticles, getArticleById, getArticleComments } = require('./controllers/article-controllers');
+
+const { getArticles, getArticleById, patchArticleById, postComment, getArticleComments } = require('./controllers/article-controllers');
+
 const { getUsers } = require('./controllers/users-controllers');
 
 const { invalidPath } = require('./controllers/misc-controllers');
@@ -18,6 +20,10 @@ app.get('/api/users', getUsers);
 
 app.get('/api/articles/:article_id/comments', getArticleComments)
 
+app.patch('/api/articles/:article_id', patchArticleById)
+
+app.post('/api/articles/:article_id/comments', postComment)
+
 app.all('*', invalidPath);
 
 app.use((err, req, res, next) => {
@@ -28,9 +34,10 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  if (err.code === '22P02')
-    res.status(400).send({ msg: 'Bad request, invalid article_id' });
-  else {
+  errors = ['22P02', '23503', '23502' ]
+  if(errors.includes(err.code)){
+    res.status(400).send({ msg: 'Bad request'})
+  } else {
     next(err);
   }
 });
