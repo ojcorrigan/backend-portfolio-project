@@ -75,12 +75,12 @@ describe('getArticleById', () => {
       expect(result.body.msg).toBe('Article not found');
     });
   });
-  test('400: GET /api/articles/ABD responds with bad request invalid article_id', () => {
+  test('400: GET /api/articles/ABD responds with bad request', () => {
     return request(app)
     .get('/api/articles/ABD')
     .expect(400)
     .then((result) => {
-      expect(result.body.msg).toBe('Bad request, invalid article_id');
+      expect(result.body.msg).toBe('Bad request');
     })
   })
 })
