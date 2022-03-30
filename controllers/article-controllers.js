@@ -38,9 +38,13 @@ exports.postComment = (req, res, next) => {
  const com  = req.body
  const {article_id} = req.params
  
- 
-  insertComment(com.username, com.body, article_id).then((newComment) => {
-    res.status(202).send(newComment)
+ const promise2 = selectArticleById(article_id)
+ const promise1 = insertComment(com.username, com.body, article_id)
+
+ const dbPromises = [promise2, promise1]
+
+  Promise.all(dbPromises).then((newComment) => {
+   res.status(201).send(newComment[1])
   }).catch((err) => {
     next(err)
   })

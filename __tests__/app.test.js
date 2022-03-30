@@ -225,12 +225,12 @@ describe('patchArticleById', () => {
 })
 
 describe('postComment', () => {
-  test('202: /api/articles/:article_id/comments returns the posted comment and inserts it into comments table', () => {
+  test('201: /api/articles/:article_id/comments returns the posted comment and inserts it into comments table', () => {
     return request(app)
     .post('/api/articles/2/comments')
     .send({username: 'lurker',
             body: "hi this is a test comment"})
-    .expect(202)
+    .expect(201)
     .then((result) => {
       expect(result.body).toEqual({author: 'lurker',
       body: "hi this is a test comment", 
@@ -251,24 +251,24 @@ describe('postComment', () => {
       expect(result.body.msg).toBe('Bad request')
     })
   })
-  test('400: /api/articles/:article_id/comments article not found', () => {
+  test('404: /api/articles/:article_id/comments article not found', () => {
     return request(app)
     .post('/api/articles/1000/comments')
     .send({username: 'lurker',
     body: "hi this is a test comment"})
-    .expect(400)
+    .expect(404)
     .then((result) => {
-      expect(result.body.msg).toBe('Bad request')
+      expect(result.body.msg).toBe('Article not found')
     })
   })
   test('400: /api/articles/:article_id/comments body missing', () => {
     return request(app)
-    .post('/api/articles/1000/comments')
+    .post('/api/articles/1/comments')
     .send({username: 'lurker'
     })
     .expect(400)
     .then((result) => {
-      expect(result.body.msg).toBe('Bad request, missing information')
+      expect(result.body.msg).toBe('Bad request')
     })
   })
   })
