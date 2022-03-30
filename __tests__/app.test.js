@@ -84,6 +84,7 @@ describe('getArticleById', () => {
     })
   })
 })
+
 describe('getUsers', () => {
 
   test('200: /api/users responds with an array', () => {
@@ -109,7 +110,7 @@ describe('getUsers', () => {
         );
       });
     });
-    test('/api/userr responds 404 not found', () => {
+  test('/api/userr responds 404 not found', () => {
       return request(app)
       .get('/api/userr')
       .expect(404)
@@ -148,8 +149,8 @@ describe('getUsers', () => {
       .then((result) => {
         expect(result.body.articles).toBeSortedBy('created_at', {descending: true})
       })
-      })
-       })
+   })
+ })
 
     describe('getArticleComments', () => {
       test('200: GET /api/articles/:article_id/comments responds with comments object', () => {
@@ -182,8 +183,6 @@ describe('getUsers', () => {
         .expect(400)
       })
     })
-
-
 
 
 describe('patchArticleById', () => {
@@ -272,8 +271,8 @@ describe('postComment', () => {
       comment_id: 19,
       created_at: expect.any(String),
       votes:0
-  }) 
-  })
+      }) 
+    })
   })
   test('400: /api/articles/:article_id/comments bad request username doesn\'t exist', () => {
     return request(app)
@@ -305,6 +304,6 @@ describe('postComment', () => {
       expect(result.body.msg).toBe('Bad request')
     })
   })
-  })
+})
   
 
