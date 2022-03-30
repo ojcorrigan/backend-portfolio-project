@@ -29,3 +29,4 @@ exports.getArticleComments = (req, res, next) => {
    res.status(200).send({comments: result[1]})
  }).catch(next)
 }
+
