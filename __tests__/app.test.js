@@ -223,3 +223,13 @@ describe('patchArticleById', () => {
     .expect(404)
   })
 })
+
+
+xdescribe('deleteComment', () => {
+test('204: DELETE /api/comments/:comment_id removes comment by comment_id', () => {
+  return request(app)
+  .delete('/api/comments/2')
+  .expect(204)
+})
+
+})

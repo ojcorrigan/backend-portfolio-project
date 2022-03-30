@@ -5,6 +5,8 @@ const{ getTopics } = require('./controllers/topics-controllers')
 
 const { getArticles, getArticleById, patchArticleById } = require('./controllers/article-controllers');
 
+const { deleteComment } = require('./controllers/comments-controllers')
+
 const { getUsers } = require('./controllers/users-controllers');
 
 const { invalidPath } = require('./controllers/misc-controllers');
@@ -20,6 +22,9 @@ app.get('/api/users', getUsers);
 
 
 app.patch('/api/articles/:article_id', patchArticleById)
+
+
+app.delete('/api/comments/:comment_id', deleteComment)
 
 app.all('*', invalidPath);
 
