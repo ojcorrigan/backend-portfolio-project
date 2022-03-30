@@ -13,11 +13,12 @@ exports.getArticleById = (req, res, next) => {
 };
 
 exports.getArticles = (req,res,next) => {
-  const{ sortby } = req.query
-  console.log(sortby)
+  const{ sortby, order } = req.query
 
-  selectArticles(sortby).then((result) => {
+  selectArticles(sortby, order).then((result) => {
     res.status(200).send({articles: result})
+  }).catch((err) => {
+    next(err)
   })
 }
 

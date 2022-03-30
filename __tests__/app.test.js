@@ -336,12 +336,52 @@ describe('postComment', () => {
 })
 
 describe('getArticles query', () => {
-  test('200: /api/articles/if passed a sortby query will return articles sorted by the query', () => {
+  test('200: /api/articles/if passed a sortby query will return articles sorted by the query, default DESC', () => {
     return request(app)
     .get('/api/articles?sortby=author')
     .expect(200)
     .then((result) => {
       expect(result.body.articles).toBeSortedBy('author', {descending: true})
+    })
+  })
+  test('200: /api/articles/if passed a sortby author_id will return articles sorted by the query default DESC', () => {
+    return request(app)
+    .get('/api/articles?sortby=article_id')
+    .expect(200)
+    .then((result) => {
+      expect(result.body.articles).toBeSortedBy('article_id', {descending: true})
+    })
+  })
+  test('200: /api/articles/if passed a sortby query will return articles by order included in query', () => {
+    return request(app)
+    .get('/api/articles?sortby=article_id&&order=ASC')
+    .expect(200)
+    .then((result) => {
+      expect(result.body.articles).toBeSortedBy('article_id', {ascending: true})
+    })
+  })
+  test('200: /api/articles/if passed a sortby query will return articles by order included in query', () => {
+    return request(app)
+    .get('/api/articles?sortby=author&&order=ASC')
+    .expect(200)
+    .then((result) => {
+      expect(result.body.articles).toBeSortedBy('author', {ascending: true})
+    })
+  })
+  test('400: /api/articles/if passed an invalid sortby returns 400 ', () => {
+    return request(app)
+    .get('/api/articles?sortby=authors')
+    .expect(400)
+    .then((result) => {
+      expect(result.body.msg).toBe('Bad request')
+    })
+  })
+  test('400: /api/articles/if passed an invalid order returns bad request ', () => {
+    return request(app)
+    .get('/api/articles?sortby=author&&order=DROP DATABASE')
+    .expect(400)
+    .then((result) => {
+      expect(result.body.msg).toBe('Bad request')
     })
   })
 })
