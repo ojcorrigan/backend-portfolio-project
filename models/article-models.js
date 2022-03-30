@@ -13,13 +13,19 @@ exports.selectArticleById = (article_id) => {
   });
 };
 
-exports.selectArticles = () => {
+exports.selectArticles = (sortby = 'created_at') => {
+  const validSortBy = ['title', 'article_id', 'topic', 'created_at', 'votes', 'author']
+
+  if(!validSortBy.includes(sortby)) {
+    return Promise.reject({ status: 400, msg: 'invalid sortby' });
+  }
+
   return db.query(
     `SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, 
     COUNT(comment_id) as comment_count
     FROM articles 
     LEFT JOIN comments ON comments.article_id = articles.article_id GROUP BY articles.article_id 
-    ORDER BY created_at DESC;`).then((result) => {
+    ORDER BY ${sortby} DESC;`).then((result) => {
     return result.rows
   })
 }

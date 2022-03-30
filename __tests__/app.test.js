@@ -334,6 +334,22 @@ describe('postComment', () => {
     })
   })
 })
+
+describe('getArticles query', () => {
+  test('200: /api/articles/if passed a sortby query will return articles sorted by the query', () => {
+    return request(app)
+    .get('/api/articles?sortby=author')
+    .expect(200)
+    .then((result) => {
+      expect(result.body.articles).toBeSortedBy('author', {descending: true})
+    })
+  })
+})
   
-
-
+// // author: expect.any(String),
+// title: expect.any(String),
+// article_id: expect.any(Number),
+// topic: expect.any(String),
+// created_at: expect.any(String),
+// votes: expect.any(Number)
+// expect(result.body.articles).toBeSortedBy('created_at', {descending: true})
