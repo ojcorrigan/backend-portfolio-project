@@ -3,7 +3,9 @@ const app = express();
 
 const{ getTopics } = require('./controllers/topics-controllers')
 
-const { getArticles, getArticleById, patchArticleById, postComment, getArticleComments } = require('./controllers/article-controllers');
+const { getArticles, getArticleById, patchArticleById } = require('./controllers/article-controllers');
+
+const {getArticleComments, postComment} = require('./controllers/comments-controllers')
 
 const { getUsers } = require('./controllers/users-controllers');
 
