@@ -307,3 +307,13 @@ describe('postComment', () => {
 })
   
 
+xdescribe('getApi', () => {
+  test('200: /api returns a JSON object with all endpoints and what can be done with them', () => {
+    return request(app)
+    .get('/api')
+    .expect(200)
+    .then((result) => {
+      console.log(result)
+    })
+  })
+})
