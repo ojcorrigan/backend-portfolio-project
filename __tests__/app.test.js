@@ -50,20 +50,21 @@ describe('getTopics', () => {
 
 
 describe('getArticleById', () => {
-  test('200 GET /api/articles/2 responds with obeject with correct key values', () => {
+  test('200 GET /api/articles/2 responds with object with correct key values', () => {
     return request(app)
-    .get('/api/articles/2')
+    .get('/api/articles/1')
     .expect(200)
     .then((result) => {
       expect(result.body).toBeInstanceOf(Object);
       expect(result.body).toMatchObject({
-        author: 'icellusedkars',
+        author: 'butter_bridge',
         title: expect.any(String),
         body: expect.any(String),
-        article_id: 2,
+        article_id: 1,
         topic: 'mitch',
         created_at: expect.any(String),
-        votes: 0
+        votes: 100, 
+        comment_count: "11"
       });
     });
   });
@@ -335,5 +336,14 @@ describe('postComment', () => {
   })
 })
   
-
+xdescribe('getApi', () => {
+  test('200: /api returns a JSON object with all endpoints and what can be done with them', () => {
+    return request(app)
+    .get('/api')
+    .expect(200)
+    .then((result) => {
+      console.log(result)
+    })
+  })
+})
 
