@@ -50,7 +50,7 @@ describe('getTopics', () => {
 
 
 describe('getArticleById', () => {
-  test('200 GET /api/articles/2 responds with obeject with correct key values', () => {
+  test('200 GET /api/articles/2 responds with object with correct key values', () => {
     return request(app)
     .get('/api/articles/1')
     .expect(200)
