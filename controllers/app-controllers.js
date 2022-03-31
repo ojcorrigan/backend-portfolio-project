@@ -2,5 +2,5 @@ exports.getApi = (req, res, next) => {
     const appJson = require('../endpoints.json')
     
     
-        res.status(200).send({'app endpoints': appJson})
+        res.status(200).send(appJson)
     }

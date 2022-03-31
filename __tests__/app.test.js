@@ -61,7 +61,8 @@ describe('getUsers', () => {
     .get('/api/users')
     .expect(200)
     .then((res) => {
-      expect(res.body).toBeInstanceOf(Array);
+      expect(res.body).toBeInstanceOf(Object);
+      expect(res.body.users).toBeInstanceOf(Array)
     });
   });
 
@@ -70,9 +71,8 @@ describe('getUsers', () => {
     .get('/api/users')
     .expect(200)
     .then((res) => {
-      expect(res.body).toBeInstanceOf(Array);
       expect(
-        res.body.forEach((user) => {
+        res.body.users.forEach((user) => {
           expect(user).toMatchObject({
             username: expect.any(String),
           });
@@ -387,7 +387,7 @@ describe('postComment', () => {
             body: "hi this is a test comment"})
     .expect(201)
     .then((result) => {
-      expect(result.body).toEqual({author: 'lurker',
+      expect(result.body.comment).toEqual({author: 'lurker',
       body: "hi this is a test comment", 
       article_id: 2,
       comment_id: 19,
@@ -433,13 +433,17 @@ describe('postComment', () => {
 
 //API tests  
 
-xdescribe('getApi', () => {
+describe('getApi', () => {
   test('200: /api returns a JSON object with all endpoints and what can be done with them', () => {
     return request(app)
     .get('/api')
     .expect(200)
     .then((result) => {
-      console.log(result.body)
+      expect(result.body).toBeInstanceOf(Object)
+      expect(result.body["DELETE /api/comments/:comment_id"]).toEqual({
+        "description": "allows a user to remove a comment by using a comment_id in the URL",
+        "queries": [],
+        "exampleResponse": 204})
     })
   })
 })
