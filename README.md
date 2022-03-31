@@ -16,4 +16,6 @@ To do this you will need to create individual .env files using the .env-example 
 
 to seed the databases you will need to run the command npm run setup-dbs, this will allow the app to run as intended. 
 
+minimum node requirements v16
+
 There is not much else to say other than enjoy.
