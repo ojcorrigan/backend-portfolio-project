@@ -21,9 +21,7 @@ exports.selectArticles = (sortby = 'created_at', order = 'DESC', topic) => {
   'created_at', 
   'votes', 
   'author']
-
   const validOrder = ['ASC', 'DESC', 'asc', 'desc']
-
   const topicArr = []
 
   if(!validSortBy.includes(sortby) || !validOrder.includes(order)) {
@@ -65,5 +63,4 @@ exports.updateArticleById = (article_id, votes) => {
         })
       }else return results.rows[0]
     })
-
 }
