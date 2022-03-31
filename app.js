@@ -7,6 +7,8 @@ const { getArticles, getArticleById, patchArticleById } = require('./controllers
 
 const {getArticleComments, postComment} = require('./controllers/comments-controllers')
 
+const { deleteComment } = require('./controllers/comments-controllers')
+
 const { getUsers } = require('./controllers/users-controllers');
 
 const { invalidPath } = require('./controllers/misc-controllers');
@@ -24,7 +26,10 @@ app.get('/api/articles/:article_id/comments', getArticleComments)
 
 app.patch('/api/articles/:article_id', patchArticleById)
 
+app.delete('/api/comments/:comment_id', deleteComment)
+
 app.post('/api/articles/:article_id/comments', postComment)
+
 
 app.all('*', invalidPath);
 
