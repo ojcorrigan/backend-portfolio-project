@@ -39,8 +39,8 @@ exports.postComment = (req, res, next) => {
    
     const dbPromises = [promise2, promise1]
    
-     Promise.all(dbPromises).then((newComment) => {
-      res.status(201).send(newComment[1])
+     Promise.all(dbPromises).then((returnedPromises) => {
+      res.status(201).send({comment: returnedPromises[1]})
      }).catch((err) => {
        next(err)
      })
