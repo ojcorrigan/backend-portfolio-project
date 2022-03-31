@@ -1,8 +1,8 @@
 Welcome to my very first app. I have created it as part of the Northcoders bootcamp. 
 
-What I have made is a simple app with several endpoints all of which can be viewed in the endpoints.json file. The aim was to create a news app which could provide the client with information about news articles, comments, users and topics. It also allows for posting of new comments, deletion of comments by id and the patching of articles. 
+I have made a simple app with several endpoints (all of which can be viewed in the endpoints.json file.) The aim was to create a news app which could provide the client with information about news articles, comments, users and topics. It also allows for posting of new comments, deletion of comments by id and the patching of articles. 
 
-The app was made using TDD and utilising an MVC model to access data from tables from a small database using SQL. 
+The app was made using a TDD process and utilising an MVC model to access data from tables from a small database using SQL. 
 
 There are a few things you'll need to do if you want to get it up and running.
 
@@ -16,6 +16,12 @@ To do this you will need to create individual .env files using the .env-example 
 
 to seed the databases you will need to run the command npm run setup-dbs, this will allow the app to run as intended. 
 
-minimum node requirements v16
+minimum node requirements v17.4.0
+
+minimum PostgreSQL v14.2
+
+if you would like to see a hosted version of the app you can visit:
+
+https://ojs-news-app1.herokuapp.com/
 
 There is not much else to say other than enjoy.
