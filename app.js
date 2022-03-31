@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+//Routing
+const apiRouter = require('./routes/api-router');
 
 const { getApi } = require('./controllers/app-controllers')
 
@@ -14,25 +16,10 @@ const { deleteComment } = require('./controllers/comments-controllers')
 const { getUsers } = require('./controllers/users-controllers');
 
 const { invalidPath } = require('./controllers/misc-controllers');
+
 app.use(express.json());
 
-app.get('/api', getApi)
-
-app.get('/api/topics', getTopics);
-
-app.get('/api/articles', getArticles);
-
-app.get('/api/articles/:article_id', getArticleById);
-
-app.get('/api/users', getUsers);
-
-app.get('/api/articles/:article_id/comments', getArticleComments)
-
-app.patch('/api/articles/:article_id', patchArticleById)
-
-app.delete('/api/comments/:comment_id', deleteComment)
-
-app.post('/api/articles/:article_id/comments', postComment)
+app.use('/api', apiRouter);
 
 app.all('*', invalidPath);
 

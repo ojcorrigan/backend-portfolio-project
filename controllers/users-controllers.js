@@ -1,4 +1,3 @@
-const res = require('express/lib/response');
 const { selectUsers } = require('../models/users-models');
 
 exports.getUsers = (req, res, next) => {
