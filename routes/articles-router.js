@@ -9,8 +9,8 @@ const {
   postComment,
 } = require('../controllers/comments-controllers');
 
-articlesRouter.get('/', getArticles);
 articlesRouter
+  .get('/', getArticles)
   .get('/:article_id', getArticleById)
   .patch('/:article_id', patchArticleById)
   .get('/:article_id/comments', getArticleComments)
