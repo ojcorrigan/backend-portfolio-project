@@ -457,6 +457,34 @@ describe('postArticle', () => {
   });
 });
 
+describe('deleteArticle', () => {
+  test('204: DELETE /api/articles/2 removes article by article_id', () => {
+    return request(app)
+      .delete('/api/articles/2')
+      .expect(204)
+      .then(() => {
+        return request(app).get('/api/comments/2').expect(404);
+      });
+  });
+  test('404: DELETE /api/articles/2000 article_id not found', () => {
+    return request(app)
+      .delete('/api/articles/20000')
+      .expect(404)
+      .then((result) => {
+        expect(result.body.msg).toBe('Article not found');
+      });
+  });
+
+  test('400: DELETE /api/articles/A invalid comment id input', () => {
+    return request(app)
+      .delete('/api/articles/A')
+      .expect(400)
+      .then((result) => {
+        expect(result.body.msg).toBe('Bad request');
+      });
+  });
+});
+
 //Comments test
 
 describe('getArticleComments', () => {
