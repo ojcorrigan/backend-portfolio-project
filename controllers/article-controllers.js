@@ -45,7 +45,7 @@ exports.postArticle = (req, res, next) => {
   insertArticle(article)
     .then((result) => {
       selectArticleById(result.article_id).then((secondResult) => {
-        res.status(202).send({ article: secondResult });
+        res.status(201).send({ article: secondResult });
       });
     })
     .catch((err) => {

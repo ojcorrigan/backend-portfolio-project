@@ -16,7 +16,7 @@ exports.postTopic = (req, res, next) => {
 
   insertTopic(name, desc)
     .then((topic) => {
-      res.status(202).send({ topic });
+      res.status(201).send({ topic });
     })
     .catch((err) => {
       next(err);
