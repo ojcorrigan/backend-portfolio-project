@@ -53,11 +53,19 @@ To do this you will need to create individual .env files using the .env-example 
 
 You will require a **.env.test** and a **.env.development** file to be able to connect to the appropriate database. </p>
 
-<p>Finally you will need to seed the databases, otherwise the app will not find any data. To do this run the command
+<p>Finally you will need to seed the databases, otherwise the app will not find any data. To do this first run the command
 
 `npm run setup-dbs `
 
-this will allow the app to run as intended.</p>
+this will setup the database to seed it run: </p>
+
+`npm run seed `
+
+and finally to allow the server to listen for requests use:
+
+`npm run start `
+
+The server will now be able to respond to request. A program like insomnia will allow you to send requests and view the responses from the api.
 
 ---
 
