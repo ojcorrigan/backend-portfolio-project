@@ -196,7 +196,7 @@ describe('patchArticleById', () => {
     return request(app)
       .patch('/api/articles/2')
       .send({ inc_votes: 5 })
-      .expect(202)
+      .expect(200)
       .then((result) => {
         expect(result.body).toMatchObject({
           author: 'icellusedkars',
@@ -214,7 +214,7 @@ describe('patchArticleById', () => {
     return request(app)
       .patch('/api/articles/1')
       .send({ inc_votes: -5 })
-      .expect(202)
+      .expect(200)
       .then((result) => {
         expect(result.body).toMatchObject({
           author: 'butter_bridge',
@@ -232,7 +232,7 @@ describe('patchArticleById', () => {
     return request(app)
       .patch('/api/articles/1')
       .send({ inc_votes: -105 })
-      .expect(202)
+      .expect(200)
       .then((result) => {
         expect(result.body).toMatchObject({
           author: 'butter_bridge',
@@ -452,6 +452,77 @@ describe('postComment', () => {
     return request(app)
       .post('/api/articles/1/comments')
       .send({ username: 'lurker' })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.msg).toBe('Bad request');
+      });
+  });
+});
+
+describe('patchComment', () => {
+  test('202 /api/comments/2 allows user to increment votes', () => {
+    return request(app)
+      .patch('/api/comments/2')
+      .send({ inc_votes: 5 })
+      .expect(200)
+      .then((result) => {
+        expect(result.body.comment).toEqual({
+          comment_id: 2,
+          body: expect.any(String),
+          article_id: 1,
+          author: 'butter_bridge',
+          votes: 19,
+          created_at: '2020-10-31T03:03:00.000Z',
+        });
+      });
+  });
+  test('200 /api/comments/2 allows user to decrement votes', () => {
+    return request(app)
+      .patch('/api/comments/2')
+      .send({ inc_votes: -5 })
+      .expect(200)
+      .then((result) => {
+        expect(result.body.comment).toEqual({
+          comment_id: 2,
+          body: expect.any(String),
+          article_id: 1,
+          author: 'butter_bridge',
+          votes: 9,
+          created_at: '2020-10-31T03:03:00.000Z',
+        });
+      });
+  });
+  test("404 /api/comments/1000 comment doesn't exisit", () => {
+    return request(app)
+      .patch('/api/comments/1000')
+      .send({ inc_votes: -5 })
+      .expect(404)
+      .then((result) => {
+        expect(result.body.msg).toBe('Comment not found');
+      });
+  });
+  test('400 /api/comments/abc invalid input', () => {
+    return request(app)
+      .patch('/api/comments/abc')
+      .send({ inc_votes: 5 })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.msg).toBe('Bad request');
+      });
+  });
+  test('400 /api/comments/abc invalid input', () => {
+    return request(app)
+      .patch('/api/comments/2')
+      .send({ inc_votes: '5' })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.msg).toBe('Bad request');
+      });
+  });
+  test('400 /api/comments/abc invalid input', () => {
+    return request(app)
+      .patch('/api/comments/2')
+      .send({})
       .expect(400)
       .then((result) => {
         expect(result.body.msg).toBe('Bad request');
