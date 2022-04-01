@@ -459,6 +459,14 @@ describe('postComment', () => {
   });
 });
 
+xdescribe('patchComment', () => {
+  test('202 /api/comments/:comment_id allows user to increment votes', () => {
+    return request(app)
+      .patch('/api/comments/:comment_id')
+      .send({ inc_votes: 5 });
+  });
+});
+
 //API tests
 
 describe('getApi', () => {
