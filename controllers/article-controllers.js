@@ -43,9 +43,10 @@ exports.postArticle = (req, res, next) => {
   const article = req.body;
 
   insertArticle(article)
-    .then((article) => {
-      article.comment_count = 0;
-      res.status(202).send({ article });
+    .then((result) => {
+      selectArticleById(result.article_id).then((secondResult) => {
+        res.status(201).send({ article: secondResult });
+      });
     })
     .catch((err) => {
       next(err);

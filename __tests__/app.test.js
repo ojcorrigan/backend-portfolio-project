@@ -52,6 +52,48 @@ describe('getTopics', () => {
   });
 });
 
+describe('postTopic', () => {
+  test('201 /api/topics allows user to create a new topic', () => {
+    return request(app)
+      .post('/api/topics')
+      .send({
+        slug: 'new topic',
+        description: 'description here',
+      })
+      .expect(201)
+      .then((result) => {
+        expect(result.body.topic).toEqual({
+          slug: 'new topic',
+          description: 'description here',
+        });
+      });
+  });
+  test('400 /api/topics bad request no data sent', () => {
+    return request(app)
+      .post('/api/topics')
+      .send({
+        slug: '',
+        description: '',
+      })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.msg).toEqual('Bad request');
+      });
+  });
+  test('400 /api/topics bad request wrong data sent', () => {
+    return request(app)
+      .post('/api/topics')
+      .send({
+        slug: 5,
+        description: 5,
+      })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.msg).toEqual('Bad request');
+      });
+  });
+});
+
 //Users tests
 
 describe('getUsers', () => {
@@ -349,7 +391,7 @@ describe('getArticles query', () => {
 });
 
 describe('postArticle', () => {
-  test('202 /api/articles allows exisiting user to post an article on an exisiting topic', () => {
+  test('201 /api/articles allows exisiting user to post an article on an exisiting topic', () => {
     return request(app)
       .post('/api/articles')
       .send({
@@ -358,14 +400,14 @@ describe('postArticle', () => {
         body: 'this is a test body, isnt it great',
         topic: 'cats',
       })
-      .expect(202)
+      .expect(201)
       .then((result) => {
         expect(result.body.article).toEqual({
           author: 'icellusedkars',
           title: 'stuff',
           body: 'this is a test body, isnt it great',
           topic: 'cats',
-          comment_count: 0,
+          comment_count: '0',
           created_at: expect.any(String),
           votes: 0,
           article_id: expect.any(Number),
