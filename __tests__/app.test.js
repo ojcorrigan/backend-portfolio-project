@@ -349,17 +349,38 @@ describe('getArticles query', () => {
 });
 
 xdescribe('postArticle', () => {
-  test('./api/articles', () => {
+  test('202 /api/articles allows exisiting user to post an article on an exisiting topic', () => {
     return request(app)
       .post('/api/articles')
       .send({
-        author: 'OJ',
+        author: 'icellusedkars',
         title: 'stuff',
         body: 'this is a test body, isnt it great',
-        topic: 'me, me, me',
+        topic: 'cats',
       })
       .expect(202)
-      .then((result) => {});
+      .then((result) => {
+        expect(result.body.article).toEqual({
+          author: 'icellusedkars',
+          title: 'stuff',
+          body: 'this is a test body, isnt it great',
+          topic: 'cats',
+        });
+      });
+  });
+  test('400 /api/articles responds with bad request if username doesnt already exist', () => {
+    return request(app)
+      .post('/api/articles')
+      .send({
+        author: 'Im_not_real',
+        title: 'stuff',
+        body: 'this is a test body, isnt it great',
+        topic: 'cats',
+      })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.msg).toBe('Bad request');
+      });
   });
 });
 

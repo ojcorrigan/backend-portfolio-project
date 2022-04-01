@@ -56,7 +56,7 @@ exports.updateComment = (comment_id, votes) => {
           msg: 'Comment not found',
         });
       } else {
-        return result.rows;
+        return result.rows[0];
       }
     });
 };

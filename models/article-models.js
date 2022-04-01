@@ -74,3 +74,23 @@ exports.updateArticleById = (article_id, votes) => {
       } else return results.rows[0];
     });
 };
+
+exports.insertArticle = (article) => {
+  const articleDetails = [
+    article.author,
+    article.title,
+    article.body,
+    article.topic,
+  ];
+  return db
+    .query(
+      `INSERT INTO articles (author, title, body, topic) 
+       VALUES($1, $2, $3, $4) SELECT articles.*, 
+       COUNT(comment_id) as comment_count FROM articles LEFT JOIN comments ON comments.article_id = articles.article_id 
+       WHERE articles.article_title = $2 GROUP BY articles.article_id;`,
+      articleDetails
+    )
+    .then((result) => {
+      return result.rows[0];
+    });
+};
