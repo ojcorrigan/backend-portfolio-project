@@ -365,7 +365,7 @@ describe('postArticle', () => {
           title: 'stuff',
           body: 'this is a test body, isnt it great',
           topic: 'cats',
-          comment_count: expect.any(String),
+          comment_count: 0,
           created_at: expect.any(String),
           votes: 0,
           article_id: expect.any(Number),
