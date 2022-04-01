@@ -74,3 +74,29 @@ exports.updateArticleById = (article_id, votes) => {
       } else return results.rows[0];
     });
 };
+
+exports.insertArticle = (article) => {
+  const articleDetails = [
+    article.author,
+    article.title,
+    article.body,
+    article.topic,
+  ];
+
+  if (!article.title || !article.body) {
+    return Promise.reject({
+      status: 400,
+      msg: 'Bad request',
+    });
+  } else {
+    return db
+      .query(
+        `INSERT INTO articles (author, title, body, topic) 
+       VALUES($1, $2, $3, $4) RETURNING *;`,
+        articleDetails
+      )
+      .then((result) => {
+        return result.rows[0];
+      });
+  }
+};

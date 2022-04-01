@@ -348,6 +348,73 @@ describe('getArticles query', () => {
   });
 });
 
+describe('postArticle', () => {
+  test('202 /api/articles allows exisiting user to post an article on an exisiting topic', () => {
+    return request(app)
+      .post('/api/articles')
+      .send({
+        author: 'icellusedkars',
+        title: 'stuff',
+        body: 'this is a test body, isnt it great',
+        topic: 'cats',
+      })
+      .expect(202)
+      .then((result) => {
+        expect(result.body.article).toEqual({
+          author: 'icellusedkars',
+          title: 'stuff',
+          body: 'this is a test body, isnt it great',
+          topic: 'cats',
+          comment_count: 0,
+          created_at: expect.any(String),
+          votes: 0,
+          article_id: expect.any(Number),
+        });
+      });
+  });
+  test('400 /api/articles responds with bad request if username doesnt already exist', () => {
+    return request(app)
+      .post('/api/articles')
+      .send({
+        author: 'Im_not_real',
+        title: 'stuff',
+        body: 'this is a test body, isnt it great',
+        topic: 'cats',
+      })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.msg).toBe('Bad request');
+      });
+  });
+  test('400 /api/articles responds with bad request if missing a field', () => {
+    return request(app)
+      .post('/api/articles')
+      .send({
+        author: 'icellusedkars',
+        body: 'this is a test body, isnt it great',
+        topic: 'cats',
+      })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.msg).toBe('Bad request');
+      });
+  });
+  test('400 /api/articles responds with bad request if given an empty title or body field', () => {
+    return request(app)
+      .post('/api/articles')
+      .send({
+        author: 'icellusedkars',
+        title: '',
+        body: 'this is a test body, isnt it great',
+        topic: 'cats',
+      })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.msg).toBe('Bad request');
+      });
+  });
+});
+
 //Comments test
 
 describe('getArticleComments', () => {
