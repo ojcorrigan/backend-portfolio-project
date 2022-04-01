@@ -196,7 +196,7 @@ describe('patchArticleById', () => {
     return request(app)
       .patch('/api/articles/2')
       .send({ inc_votes: 5 })
-      .expect(202)
+      .expect(200)
       .then((result) => {
         expect(result.body).toMatchObject({
           author: 'icellusedkars',
@@ -214,7 +214,7 @@ describe('patchArticleById', () => {
     return request(app)
       .patch('/api/articles/1')
       .send({ inc_votes: -5 })
-      .expect(202)
+      .expect(200)
       .then((result) => {
         expect(result.body).toMatchObject({
           author: 'butter_bridge',
@@ -232,7 +232,7 @@ describe('patchArticleById', () => {
     return request(app)
       .patch('/api/articles/1')
       .send({ inc_votes: -105 })
-      .expect(202)
+      .expect(200)
       .then((result) => {
         expect(result.body).toMatchObject({
           author: 'butter_bridge',
@@ -500,7 +500,7 @@ describe('patchComment', () => {
     return request(app)
       .patch('/api/comments/2')
       .send({ inc_votes: 5 })
-      .expect(202)
+      .expect(200)
       .then((result) => {
         expect(result.body.comment).toEqual({
           comment_id: 2,
@@ -512,11 +512,11 @@ describe('patchComment', () => {
         });
       });
   });
-  test('202 /api/comments/2 allows user to decrement votes', () => {
+  test('200 /api/comments/2 allows user to decrement votes', () => {
     return request(app)
       .patch('/api/comments/2')
       .send({ inc_votes: -5 })
-      .expect(202)
+      .expect(200)
       .then((result) => {
         expect(result.body.comment).toEqual({
           comment_id: 2,
@@ -541,6 +541,24 @@ describe('patchComment', () => {
     return request(app)
       .patch('/api/comments/abc')
       .send({ inc_votes: 5 })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.msg).toBe('Bad request');
+      });
+  });
+  test('400 /api/comments/abc invalid input', () => {
+    return request(app)
+      .patch('/api/comments/2')
+      .send({ inc_votes: '5' })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.msg).toBe('Bad request');
+      });
+  });
+  test('400 /api/comments/abc invalid input', () => {
+    return request(app)
+      .patch('/api/comments/2')
+      .send({})
       .expect(400)
       .then((result) => {
         expect(result.body.msg).toBe('Bad request');

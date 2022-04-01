@@ -43,6 +43,13 @@ exports.insertComment = (username, body, article_id) => {
 };
 
 exports.updateComment = (comment_id, votes) => {
+  if (typeof votes !== 'number' || !votes) {
+    return Promise.reject({
+      status: 400,
+      msg: 'Bad request',
+    });
+  }
+
   return db
     .query(
       `UPDATE comments SET votes = votes + $1 

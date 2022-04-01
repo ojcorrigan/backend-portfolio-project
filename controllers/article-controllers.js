@@ -32,7 +32,7 @@ exports.patchArticleById = (req, res, next) => {
   const votes = req.body.inc_votes;
   updateArticleById(article_id, votes)
     .then((result) => {
-      res.status(202).send(result);
+      res.status(200).send(result);
     })
     .catch((err) => {
       next(err);
