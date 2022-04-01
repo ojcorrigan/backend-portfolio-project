@@ -457,6 +457,17 @@ describe('postArticle', () => {
   });
 });
 
+xdescribe('deleteArticle', () => {
+  test('/api/articles/:article_id', () => {
+    return request(app)
+      .delete('/api/articles/2')
+      .expect(204)
+      .then(() => {
+        return request(app).get('/api/articles/2').expect(404);
+      });
+  });
+});
+
 //Comments test
 
 describe('getArticleComments', () => {
