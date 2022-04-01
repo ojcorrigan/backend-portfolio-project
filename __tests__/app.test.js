@@ -106,7 +106,7 @@ describe('getUserById', () => {
   });
   test('/api/user/i_dont_exist responds 404 not found', () => {
     return request(app)
-      .get('/api/i_dont_exist')
+      .get('/api/user/i_dont_exist')
       .expect(404)
       .then((result) => {
         expect(result.body.msg).toBe('invalid path');
