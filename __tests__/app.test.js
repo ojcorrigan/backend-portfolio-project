@@ -52,6 +52,48 @@ describe('getTopics', () => {
   });
 });
 
+describe('postTopic', () => {
+  test('202 /api/topics allows user to create a new topic', () => {
+    return request(app)
+      .post('/api/topics')
+      .send({
+        slug: 'new topic',
+        description: 'description here',
+      })
+      .expect(202)
+      .then((result) => {
+        expect(result.body.topic).toEqual({
+          slug: 'new topic',
+          description: 'description here',
+        });
+      });
+  });
+  test('400 /api/topics bad request no data sent', () => {
+    return request(app)
+      .post('/api/topics')
+      .send({
+        slug: '',
+        description: '',
+      })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.msg).toEqual('Bad request');
+      });
+  });
+  test('400 /api/topics bad request wrong data sent', () => {
+    return request(app)
+      .post('/api/topics')
+      .send({
+        slug: 5,
+        description: 5,
+      })
+      .expect(400)
+      .then((result) => {
+        expect(result.body.msg).toEqual('Bad request');
+      });
+  });
+});
+
 //Users tests
 
 describe('getUsers', () => {
