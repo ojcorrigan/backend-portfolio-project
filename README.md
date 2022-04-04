@@ -5,7 +5,7 @@
 <p>It uses an api that has several endpoints (all of which can be viewed in the endpoints.json file.)<br> 
 The aim was to create a news app which could provide the client with information about news articles, comments, users and topics.<br> It also allows for posting of new comments, deletion of comments by id and the patching of articles.</p>
 
-<p>The app was built using Javascript and written in VScode. I have hosted the app myself on Heroku (https://ojs-news-app1.herokuapp.com/) and the whole project was managed using Trello.
+<p>The app was built using Javascript and written in VScode. I have hosted the app myself on Heroku (https://ojs-news-app1.herokuapp.com/api) and the whole project was managed using Trello.
 
 <p>A TDD process was used to develop the app and it was built utilising an MVC model to access data from tables from a small database using SQL.</p>
 
