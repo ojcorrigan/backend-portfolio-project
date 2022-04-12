@@ -157,7 +157,6 @@
     "queries": [],
     "exampleResponse": 204
   },
-
   "GET /api/users": {
     "description": "serves an object with a key of users that has a value of an array of user objects",
     "queries": [],
