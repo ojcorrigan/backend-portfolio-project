@@ -2,6 +2,7 @@
   "GET /api": {
     "description": "serves up a json representation of all the available endpoints of the api"
   },
+  
   "GET /api/topics": {
     "description": "serves an array of all topics",
     "queries": [],
@@ -9,6 +10,21 @@
       "topics": [{ "slug": "football", "description": "Footie!" }]
     }
   },
+
+  "POST /api/topics": {
+    "description": "Allows the user to create and post a new topic to the topics table",
+    "queries": [],
+    "examplePost": {
+      "slug": "new topic",
+      "description": "description of the new topic here"
+    },
+    "exampleResponse": {
+      "topic": {
+        "slug": "new topic",
+        "description": "description of the new topic here"
+      }
+  },
+
   "GET /api/articles": {
     "description": "serves an array of all topics",
     "queries": ["author", "topic", "sort_by", "order"],
@@ -24,6 +40,7 @@
       ]
     }
   },
+
   "GET /api/articles/:article_id": {
     "description": "serves an article object from specified article_id",
     "queries": [],
@@ -38,72 +55,136 @@
       "comment_count": "11"
     }
   },
-  "GET /api/articles/:article_id/comments":{
+
+  "POST /api/articles": {
+    "description": "Allows the user to create and post a new article to the articles table. The user must already exist in the users table",
+    "queries": [],
+    "examplePost": {
+      "author": "icellusedkars",
+      "title": "An Example Article",
+      "body": "this is a test body. This would be the text of my article about cats.",
+      "topic": "cats"
+    },
+    "exampleResponse": "article"{
+      "author": "icellusedkars",
+      "title": "An Example Article",
+      "body": "this is a test body. This would be the text of my article about cats.",
+      "topic": "cats",
+      "comment_count": "0",
+      "created_at": "2022-03-31T11:08:45.077Z",
+      "votes": 0,
+      "article_id": 1
+    }
+  },
+
+  "PATCH/api/articles/:article_id": {
+    "description": "allows the user to either increment or decrement an articles vote count serves an article object with updated votes",
+    "queries": [],
+    "exampleSend": { "inc_votes": 5 },
+    "exampleResponse": {
+      "article_id": 2,
+      "title": "Sony Vaio; or, The Laptop",
+      "topic": "mitch",
+      "author": "icellusedkars",
+      "body": "Call me Mitchell. ",
+      "created_at": "2020-10-16T05:03:00.000Z",
+      "votes": 5
+    }
+  },
+
+  "DELETE /api/articles/:article_id": {
+    "description": "allows a user to remove an article using an article_id in the URL",
+    "queries": [],
+    "exampleResponse": 204
+  },
+
+  "GET /api/articles/:article_id/comments": {
     "description": "serves an object with a key of comments which contains an array of all of the comments for a specific article",
     "queries": [],
-    "exampleResponse": {"comments": [{
-      "comment_id": 4,
-      "votes": -100,
-      "created_at": "2020-02-23T12:01:00.000Z",
-      "author": "icellusedkars",
-      "body": " I carry a log — yes. Is it funny to you? It is not to me."
-    },
-    {
-      "comment_id": 5,
-      "votes": 0,
-      "created_at": "2020-11-03T21:00:00.000Z",
-      "author": "icellusedkars",
-      "body": "I hate streaming noses"
-    }]}
-},
-"GET /api/users":{
-  "description": "serves an object with a key of users that has a value of an array of user objects",
-  "queries": [],
-  "exampleResponse":{
-    "users": [
-      { "username": "butter_bridge" },
-      { "username": "icellusedkars" },
-      { "username": "rogersop" },
-      { "username": "lurker" }
-    ]
-  }
+    "exampleResponse": {
+      "comments": [
+        {
+          "comment_id": 4,
+          "votes": -100,
+          "created_at": "2020-02-23T12:01:00.000Z",
+          "author": "icellusedkars",
+          "body": " I carry a log — yes. Is it funny to you? It is not to me."
+        },
+        {
+          "comment_id": 5,
+          "votes": 0,
+          "created_at": "2020-11-03T21:00:00.000Z",
+          "author": "icellusedkars",
+          "body": "I hate streaming noses"
+        }
+      ]
+    }
+  },
 
-},
-"POST /api/articles/:article_id/comments": {
-  "description": "Allows the user to create and post a comment to the comments table and responds with the users comment, username must exisit in users table",
-  "queries": [],
-  "examplePost": {"username": "lurker", "body": "hi this is a test comment"},
-  "exampleResponse": {
-    "comment": {
-      "comment_id": 19,
-      "body": "hi this is a test comment",
-      "article_id": 2,
-      "author": "lurker",
-      "votes": 0,
-      "created_at": "2022-03-31T11:08:45.077Z"
+  "POST /api/articles/:article_id/comments": {
+    "description": "Allows the user to create and post a comment to the comments table and responds with the users comment, username must exisit in users table",
+    "queries": [],
+    "examplePost": {
+      "username": "lurker",
+      "body": "hi this is a test comment"
+    },
+    "exampleResponse": {
+      "comment": {
+        "comment_id": 19,
+        "body": "hi this is a test comment",
+        "article_id": 2,
+        "author": "lurker",
+        "votes": 0,
+        "created_at": "2022-03-31T11:08:45.077Z"
+      }
+    }
+  },
+
+  "PATCH /api/comments/:comment_id": {
+    "description": "allows the user to either increment or decrement a comments vote count serves a comment object with updated votes",
+    "queries": [],
+    "exampleSend": { "inc_votes": 5 },
+    "exampleResponse": {"comment": {
+      "comment_id": 2,
+      "body": "This is the comment I'm increading the votes on",
+      "article_id": 1,
+      "author": "butter_bridge",
+      "votes": 19,
+      "created_at": "2020-10-31T03:03:00.000Z"
     }
   }
-},
-"PATCH/api/articles/:article_id":{
-  "description": "allows the user to either increment or decrement an articles vote count serves an article object with updated votes",
-  "queries": [],
-  "exampleSend": {"inc_votes": 5},
-  "exampleResponse": {
-    "article_id": 2,
-    "title": "Sony Vaio; or, The Laptop",
-    "topic": "mitch",
-    "author": "icellusedkars",
-    "body": "Call me Mitchell. ",
-    "created_at": "2020-10-16T05:03:00.000Z",
-    "votes": 5
+  },
+
+  "DELETE /api/comments/:comment_id": {
+    "description": "allows a user to remove a comment by using a comment_id in the URL",
+    "queries": [],
+    "exampleResponse": 204
+  },
+
+  "GET /api/users": {
+    "description": "serves an object with a key of users that has a value of an array of user objects",
+    "queries": [],
+    "exampleResponse": {
+      "users": [
+        { "username": "butter_bridge" },
+        { "username": "icellusedkars" },
+        { "username": "rogersop" },
+        { "username": "lurker" }
+      ]
+    }
+  },
+
+  "GET /api/users/:username": {
+    "description": "allows a user to retrieve user information by including a username in the URL serves an object with the information. ",
+    "queries": [],
+    "exampleResponse": {
+      "users": {
+        "username": "rogersop",
+        "name": "paul",
+        "avatar_url":
+          "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4",
+      }
+    }
   }
-
-},
-"DELETE /api/comments/:comment_id":{
-  "description": "allows a user to remove a comment by using a comment_id in the URL",
-  "queries": [],
-  "exampleResponse": 204
-  
 }
 
-}
